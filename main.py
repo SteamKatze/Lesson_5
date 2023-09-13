@@ -1,48 +1,51 @@
 import random
 
-# Створюємо список з 10 випадкових цілих чисел
-numbers = [random.randint(-100, 100) for _ in range(10)]
+# Створюємо матрицю 10x10 і заповнюємо її випадковими числами від 10 до 99
+matrix = []
+for _ in range(10):
+    row = []
+    for _ in range(10):
+        row.append(random.randint(10, 99))
+    matrix.append(row)
 
-# Виводимо список для перевірки
-print("Список цілих чисел:", numbers)
+# Виводимо матрицю
+for row in matrix:
+    for number in row:
+        print(number, end=" ")
+    print()
 
-# Знаходимо індекси мінімального та максимального значень
-min_index = numbers.index(min(numbers))
-max_index = numbers.index(max(numbers))
+# Виводимо суму чисел головної діагоналі
+main_diagonal_sum = sum(matrix[i][i] for i in range(10))
+print("Сума чисел головної діагоналі:", main_diagonal_sum)
 
-# Міняємо місцями мінімальне та максимальне значення
-numbers[min_index], numbers[max_index] = max(numbers), min(numbers)
+# Знаходимо мінімальне та максимальне значення побічної діагоналі
+secondary_diagonal_values = [matrix[i][9 - i] for i in range(10)]
+min_secondary_diagonal = min(secondary_diagonal_values)
+max_secondary_diagonal = max(secondary_diagonal_values)
+print("Мінімальне значення побічної діагоналі:", min_secondary_diagonal)
+print("Максимальне значення побічної діагоналі:", max_secondary_diagonal)
 
-# Обчислюємо суму негативних чисел
-sum_negative = sum(x for x in numbers if x < 0)
+# Введення номеру стовпця та виведення чисел з цього стовпця
+column_number = int(input("Введіть номер стовпця (0-9): "))
+column_values = [matrix[i][column_number] for i in range(10)]
+print("Числа зі стовпця {}:".format(column_number))
+print(column_values)
 
-# Обчислюємо суму парних чисел
-sum_even = sum(x for x in numbers if x % 2 == 0)
+# Введення двох номерів стовпців та обмін їх місцями
+swap_column1 = int(input("Введіть номер першого стовпця для обміну (0-9): "))
+swap_column2 = int(input("Введіть номер другого стовпця для обміну (0-9): "))
 
-# Обчислюємо суму непарних чисел
-sum_odd = sum(x for x in numbers if x % 2 != 0)
+# Перевірка правильності введених номерів стовпців
+if 0 <= swap_column1 < 10 and 0 <= swap_column2 < 10:
+    # Обмін стовпців
+    for i in range(10):
+        matrix[i][swap_column1], matrix[i][swap_column2] = matrix[i][swap_column2], matrix[i][swap_column1]
 
-# Обчислюємо добуток елементів з кратними індексами 3
-product_index3 = 1
-for i in range(len(numbers)):
-    if i % 3 == 0:
-        product_index3 *= numbers[i]
-
-# Знаходимо перший і останній позитивні індекси
-positive_indices = [i for i, x in enumerate(numbers) if x > 0]
-if positive_indices:
-    first_positive_index = positive_indices[0]
-    last_positive_index = positive_indices[-1]
-
-    # Обчислюємо суму елементів, що знаходяться між першим та останнім позитивними елементами
-    sum_between_positives = sum(numbers[first_positive_index + 1:last_positive_index])
+    # Виведення матриці після обміну
+    print("Матриця після обміну стовпців {} і {}: ".format(swap_column1, swap_column2))
+    for row in matrix:
+        for number in row:
+            print(number, end=" ")
+        print()
 else:
-    sum_between_positives = 0
-
-# Виводимо результати
-print("Сума негативних чисел:", sum_negative)
-print("Сума парних чисел:", sum_even)
-print("Сума непарних чисел:", sum_odd)
-print("Добуток елементів з кратними індексами 3:", product_index3)
-print("Добуток елементів між мінімальним та максимальним елементом:", min(numbers) * max(numbers))
-print("Сума елементів, що знаходяться між першим та останнім позитивними елементами:", sum_between_positives)
+    print("Неправильно введені номери стовпців.")
